@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}Home{{ super() }}{% endblock %}
+
+{% block content %}
+<h1>Notes by {{ name }}!</h1>
+{% endblock %}
+{% block scripts %}
+<script src="/static/scripts.js"></script>
+{% endblock %}
