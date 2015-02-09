@@ -1,5 +1,5 @@
 #! usr/bin/env python
-from flask import *  # Flask, render_template
+from flask import Flask, g, request, redirect, render_template
 from peewee import *
 
 app = Flask(__name__)
