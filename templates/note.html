@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 
-{% block title %}{{ note }}{% endblock %}
+{% block title %}{{ note.title }}{% endblock %}
 
-
+{% block content %}
+<h3>{{ note.title }}</h3>
+{% endblock %}
