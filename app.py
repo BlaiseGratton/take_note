@@ -1,4 +1,6 @@
 #! usr/bin/env python
+
+from datetime import datetime
 from flask import Flask, g, request, redirect, render_template
 from peewee import *
 
@@ -22,6 +24,7 @@ class Notes(BaseModel):
     user = ForeignKeyField(User)
     content = TextField()
     pub_date = DateTimeField()
+    title = CharField()
 
     class Meta:
         order_by = ('-pub_date',)
@@ -29,6 +32,34 @@ class Notes(BaseModel):
 def create_tables():
     database.connect()
     database.create_tables([User, Notes])
+
+def auth_user(user):
+    session['logged_in'] = True
+    session['user'] = user
+    session['username'] = user.username
+    flash('You are logged in as %s' % (user.username))
+
+def login_required(f):
+    @wraps(f)
+    def inner(*args, **kwargs):
+        if not session.get('logged_in'):
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return inner
+
+def create_user():
+    try:
+        with database.transaction():
+            user = User.create(
+                username=request.form['username'],
+                password=md5(request.form['password']).hexdigest(),
+                email=request.form['email'],
+                join_date=datetime.datetime.now()
+            )
+        auth_user(user)
+        return redirect(url_for('homepage'))
+    except IntegrityError:
+        flash('That username is already taken')
 
 def get_user_notes(self):
     return (User
@@ -42,7 +73,7 @@ def before_request():
     g.db.connect()
 
 @app.after_request
-def after_request():
+def after_request(response):
     g.db.close()
     return response
 
@@ -50,13 +81,17 @@ def after_request():
 def index(name="user"):
     return render_template("index.html", name=name)
 
-@app.route('/notes')
+@app.route('/<name>/newnote')
+def newnote(name="user"):
+    return render_template("newnote.html", name=name)
+
+@app.route('/<name>/notes')
 def notes(user=User()):
     context = get_user_notes(user)
     return render_template("notes.html", notes=context)
 
-@app.route('/notes/<note>')
-def note(note="Today I am sad"):
+@app.route('/<name>/<note>')
+def note(name="user", note="Today I am sad"):
     return render_template("note.html", note=note)
 
 if __name__ == '__main__':
