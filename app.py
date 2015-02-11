@@ -61,6 +61,15 @@ def create_user():
     except IntegrityError:
         flash('That username is already taken')
 
+user = get_object_or_404(User, username=username)
+try:
+    with database.transaction():
+        Relationship.create(
+                from_user=get_current_user(),
+                to_user=user)
+except IntegrityError:
+    pass
+
 def get_user_notes(self):
     return (User
             .select()
