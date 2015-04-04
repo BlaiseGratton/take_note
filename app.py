@@ -2,6 +2,8 @@
 
 from datetime import datetime
 from flask import Flask, g, request, redirect, render_template
+from flask.ext.bcrypt import generate_password_hash, check_password_hash
+from flask.ext.login import UserMixin
 from peewee import *
 
 app = Flask(__name__)
@@ -14,11 +16,12 @@ class BaseModel(Model):
     class Meta:
         database = database
 
-class User(BaseModel):
+class User(UserMixin, BaseModel):
     username = CharField(unique=True)
-    password = CharField()
-    email = CharField()
-    join_date = DateTimeField()
+    password = CharField(max_length=100)
+    email = CharField(unique=True)
+    join_date = DateTimeField(default=datetime.datetime.now)
+    is_admin = BooleanField(default=False)
 
 class Notes(BaseModel):
     user = ForeignKeyField(User)
