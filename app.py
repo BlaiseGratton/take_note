@@ -8,33 +8,49 @@ from peewee import *
 
 app = Flask(__name__)
 
-DATABASE = 'take_note.db'
-
-database = SqliteDatabase(DATABASE, threadlocals=True)
+DATABASE = SqliteDatabase('take_note.db', threadlocals=True)
 
 class BaseModel(Model):
     class Meta:
-        database = database
+        database = DATABASE
 
 class User(UserMixin, BaseModel):
     username = CharField(unique=True)
-    password = CharField(max_length=100)
     email = CharField(unique=True)
+    password = CharField(max_length=100)
     join_date = DateTimeField(default=datetime.datetime.now)
     is_admin = BooleanField(default=False)
 
-class Notes(BaseModel):
+    class Meta:
+        order_by = ('-join_date',)
+
+    @classmethod
+    def create_user(cls, username, email, password, admin=False):
+        try:
+            cls.create(
+                username=username,
+                email=email, 
+                password=generate_password_hash(password),
+                is_admin=admin)
+        except IntegrityError:
+            raise ValueError("User already exists")
+
+class Note(BaseModel):
     user = ForeignKeyField(User)
     content = TextField()
-    pub_date = DateTimeField()
-    title = CharField()
+    pub_date = DateTimeField(default=datetime.datetime.now)
+    title = CharField(max_length=100)
+    category = ForeignKeyField(Category)
 
     class Meta:
         order_by = ('-pub_date',)
 
+class Category(BaseModel):
+    name = CharField(unique=True, max_length=100)
+
 def create_tables():
-    database.connect()
-    database.create_tables([User, Notes])
+    DATABASE.connect()
+    DATABASE.create_tables([User, Note, Category])
 
 def auth_user(user):
     session['logged_in'] = True
