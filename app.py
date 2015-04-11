@@ -58,37 +58,6 @@ def auth_user(user):
     session['username'] = user.username
     flash('You are logged in as %s' % (user.username))
 
-def login_required(f):
-    @wraps(f)
-    def inner(*args, **kwargs):
-        if not session.get('logged_in'):
-            return redirect(url_for('login'))
-        return f(*args, **kwargs)
-    return inner
-
-def create_user():
-    try:
-        with database.transaction():
-            user = User.create(
-                username=request.form['username'],
-                password=md5(request.form['password']).hexdigest(),
-                email=request.form['email'],
-                join_date=datetime.datetime.now()
-            )
-        auth_user(user)
-        return redirect(url_for('homepage'))
-    except IntegrityError:
-        flash('That username is already taken')
-
-user = get_object_or_404(User, username=username)
-try:
-    with database.transaction():
-        Relationship.create(
-                from_user=get_current_user(),
-                to_user=user)
-except IntegrityError:
-    pass
-
 def get_user_notes(self):
     return (User
             .select()
