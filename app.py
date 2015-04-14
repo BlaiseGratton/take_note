@@ -6,47 +6,9 @@ from flask.ext.bcrypt import generate_password_hash, check_password_hash
 from flask.ext.login import UserMixin
 from peewee import *
 
+import models
+
 app = Flask(__name__)
-
-DATABASE = SqliteDatabase('take_note.db', threadlocals=True)
-
-class BaseModel(Model):
-    class Meta:
-        database = DATABASE
-
-class User(UserMixin, BaseModel):
-    username = CharField(unique=True)
-    email = CharField(unique=True)
-    password = CharField(max_length=100)
-    join_date = DateTimeField(default=datetime.datetime.now)
-    is_admin = BooleanField(default=False)
-
-    class Meta:
-        order_by = ('-join_date',)
-
-    @classmethod
-    def create_user(cls, username, email, password, admin=False):
-        try:
-            cls.create(
-                username=username,
-                email=email, 
-                password=generate_password_hash(password),
-                is_admin=admin)
-        except IntegrityError:
-            raise ValueError("User already exists")
-
-class Note(BaseModel):
-    user = ForeignKeyField(User)
-    content = TextField()
-    pub_date = DateTimeField(default=datetime.datetime.now)
-    title = CharField(max_length=100)
-    category = ForeignKeyField(Category)
-
-    class Meta:
-        order_by = ('-pub_date',)
-
-class Category(BaseModel):
-    name = CharField(unique=True, max_length=100)
 
 def create_tables():
     DATABASE.connect()
