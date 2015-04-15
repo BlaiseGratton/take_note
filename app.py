@@ -1,14 +1,24 @@
 #! usr/bin/env python
 
-from datetime import datetime
-from flask import Flask, g, request, redirect, render_template
-from flask.ext.bcrypt import generate_password_hash, check_password_hash
-from flask.ext.login import UserMixin
-from peewee import *
+from flask import (flash, Flask, g, request, 
+                   redirect, render_template, url_for)
+from flask.ext.bcrypt import check_password_hash
+from flask.ext.login import (LoginManager, login_user,
+                             logout_user, login_required)
 
+import forms
 import models
 
+DEBUG = True
+PORT = 8000
+HOST = '0.0.0.0'
+
 app = Flask(__name__)
+app.secret_key = 'iwnv847*345798^^#*(vs&348agxcvifj**w9'
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
 def create_tables():
     DATABASE.connect()
@@ -26,13 +36,22 @@ def get_user_notes(self):
             .join(Notes, on=Notes.user)
             .where(Notes.user == self.username))
 
+@login_manager.user_loader
+def load_user(userid):
+    try:
+        return models.User.get(models.User.id == userid)
+    except models.DoesNotExist:
+        return None
+
 @app.before_request
 def before_request():
-    g.db = database
+    """Connect to the database before each request."""
+    g.db = models.DATABASE
     g.db.connect()
 
 @app.after_request
 def after_request(response):
+    """Close the database connection after each request."""
     g.db.close()
     return response
 
