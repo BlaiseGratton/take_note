@@ -44,9 +44,6 @@ class Note(BaseModel):
     class Meta:
         order_by = ('-pub_date',)
 
-class Category(BaseModel):
-    name = CharField(unique=True, max_length=100)
-
 def initialize():
     DATABASE.connect()
     DATABASE.create_tables([User, Note, Category], safe=True)
