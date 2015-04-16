@@ -1,6 +1,6 @@
 import datetime
 
-from flask.ext.bcrypt import generate_password_hash, check_password_hash
+from flask.ext.bcrypt import generate_password_hash
 from flask.ext.login import UserMixin
 from peewee import *
 
@@ -43,3 +43,8 @@ class Note(BaseModel):
 
 class Category(BaseModel):
     name = CharField(unique=True, max_length=100)
+
+def initialize():
+    DATABASE.connect()
+    DATABASE.create_tables([User, Note, Category], safe=True)
+    DATABASE.close()

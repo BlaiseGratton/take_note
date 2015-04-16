@@ -20,22 +20,6 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-def create_tables():
-    DATABASE.connect()
-    DATABASE.create_tables([User, Note, Category])
-
-def auth_user(user):
-    session['logged_in'] = True
-    session['user'] = user
-    session['username'] = user.username
-    flash('You are logged in as %s' % (user.username))
-
-def get_user_notes(self):
-    return (User
-            .select()
-            .join(Notes, on=Notes.user)
-            .where(Notes.user == self.username))
-
 @login_manager.user_loader
 def load_user(userid):
     try:
@@ -72,5 +56,11 @@ def notes(user=User()):
 def note(name="user", note="Today I am sad"):
     return render_template("note.html", note=note)
 
+def get_user_notes(self):
+    return (User
+            .select()
+            .join(Notes, on=Notes.user)
+            .where(Notes.user == self.username))
+
 if __name__ == '__main__':
-    app.run(debug=True, port=8000, host='0.0.0.0')
+    app.run(debug=DEBUG, port=PORT, host=HOST)
