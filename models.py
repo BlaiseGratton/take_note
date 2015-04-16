@@ -31,6 +31,9 @@ class User(UserMixin, BaseModel):
         except IntegrityError:
             raise ValueError("User already exists")
 
+class Category(BaseModel):
+    name = CharField(unique=True, max_length=100)
+
 class Note(BaseModel):
     user = ForeignKeyField(User)
     content = TextField()
