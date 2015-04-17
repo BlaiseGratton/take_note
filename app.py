@@ -78,7 +78,7 @@ def logout():
 
 @app.route('/')
 def index():
-    return 'Home Page'
+    return render_template('index.html')
 
 def get_user_notes(self):
     return (User
