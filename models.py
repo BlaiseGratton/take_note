@@ -20,6 +20,9 @@ class User(UserMixin, BaseModel):
     class Meta:
         order_by = ('-join_date',)
 
+    def get_user_notes(self):
+        return Note.select().where(Note.user == self)
+
     @classmethod
     def create_user(cls, username, email, password, admin=False):
         try:

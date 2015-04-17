@@ -80,12 +80,6 @@ def logout():
 def index():
     return render_template('index.html')
 
-def get_user_notes(self):
-    return (User
-            .select()
-            .join(Notes, on=Notes.user)
-            .where(Notes.user == self.username))
-
 if __name__ == '__main__':
     models.initialize()
     try:
