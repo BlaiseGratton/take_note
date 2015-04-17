@@ -35,11 +35,17 @@ class Category(BaseModel):
     name = CharField(unique=True, max_length=100)
 
 class Note(BaseModel):
-    user = ForeignKeyField(User)
+    user = ForeignKeyField(
+        rel_model=User,
+        related_name='notes'
+    )
     content = TextField()
     pub_date = DateTimeField(default=datetime.datetime.now)
     title = CharField(max_length=100)
-    category = ForeignKeyField(Category)
+    category = ForeignKeyField(
+        rel_model=Category,
+        related_name='notes'
+    )
 
     class Meta:
         order_by = ('-pub_date',)
