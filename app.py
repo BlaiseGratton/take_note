@@ -76,6 +76,22 @@ def logout():
     flash("User successfully logged out", "success")
     return redirect(url_for('index'))
 
+@app.route('/new_note', methods=('GET', 'POST'))
+@login_required
+def new_note:
+    form = forms.NewNote()
+    if form.validate_on_submit():
+        models.Note.create(
+            user = g.user._get_current_object(),
+            content = form.content.data.strip(),
+            pub_date = form.pub_date.data,
+            title = form.title.data,
+            category = form.category.data
+        )
+        flash("New note created on " + form.pub_date.data, "success")
+        return redirect(url_for('notes'))
+    return render_template('new_note.html', form=form)
+
 @app.route('/')
 def index():
     return render_template('index.html')
