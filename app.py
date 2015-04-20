@@ -3,7 +3,7 @@
 from flask import (flash, Flask, g, request, 
                    redirect, render_template, url_for)
 from flask.ext.bcrypt import check_password_hash
-from flask.ext.login import (LoginManager, login_user,
+from flask.ext.login import (current_user, LoginManager, login_user,
                              logout_user, login_required)
 
 import forms
@@ -32,6 +32,7 @@ def before_request():
     """Connect to the database before each request."""
     g.db = models.DATABASE
     g.db.connect()
+    g.user = current_user
 
 @app.after_request
 def after_request(response):
@@ -46,7 +47,7 @@ def register():
         flash("User successfully registered", "success")
         models.User.create_user(
             username=form.username.data,
-            email=form.username.data,
+            email=form.email.data,
             password=form.password.data
         )
         return redirect(url_for('index'))
@@ -78,7 +79,7 @@ def logout():
 
 @app.route('/new_note', methods=('GET', 'POST'))
 @login_required
-def new_note:
+def new_note():
     form = forms.NewNote()
     if form.validate_on_submit():
         models.Note.create(
