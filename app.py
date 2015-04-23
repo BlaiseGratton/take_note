@@ -96,7 +96,8 @@ def new_note():
 @app.route('/notes')
 @login_required
 def notes():
-    notes = []
+    user = g.user._get_current_object()
+    notes = models.Note.select().where(models.Note.user == user.id)
     return render_template('notes.html', notes=notes)
 
 @app.route('/notes/<int:note_id>')

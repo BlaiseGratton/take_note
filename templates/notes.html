@@ -1,11 +1,10 @@
 {% extends "layout.html" %}
-
 {% block title %}Notes{% endblock %}
 
 {% block content %}
 <ul>
   {% for note in notes %}
-  <li>{{ notes[note] }}</li>
+  <li><a href="{{ url_for('note', note_id=note.id) }}">{{ note.title }}</a></li>
   {% endfor %}
 </ul>
 {% endblock %}
