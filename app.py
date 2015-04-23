@@ -6,6 +6,7 @@ from flask.ext.bcrypt import check_password_hash
 from flask.ext.login import (current_user, LoginManager, login_user,
                              logout_user, login_required)
 
+import datetime
 import forms
 import models
 
@@ -80,20 +81,24 @@ def logout():
 @app.route('/new_note', methods=('GET', 'POST'))
 @login_required
 def new_note():
-    form = forms.NewNote()
+    form = forms.NoteForm()
     if form.validate_on_submit():
         models.Note.create(
             user = g.user._get_current_object(),
             content = form.content.data.strip(),
-            pub_date = form.pub_date.data,
             title = form.title.data,
             category = form.category.data
         )
-        flash("New note created on " + form.pub_date.data, "success")
+        flash("New note created on " + "{:%B %d, %Y}".format(datetime.datetime.now()), "success")
         return redirect(url_for('notes'))
-    return render_template('new_note.html', form=form)
+    return render_template('newnote.html', form=form)
 
 @app.route('/notes')
+@login_required
+def notes():
+    notes = []
+    return render_template('notes.html', notes=notes)
+
 @app.route('/notes/<int:note_id>')
 @login_required
 def note(note_id):
