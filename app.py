@@ -1,6 +1,6 @@
 #! usr/bin/env python
 
-from flask import (flash, Flask, g, request, 
+from flask import (abort, flash, Flask, g,
                    redirect, render_template, url_for)
 from flask.ext.bcrypt import check_password_hash
 from flask.ext.login import (current_user, LoginManager, login_user,
@@ -92,6 +92,18 @@ def new_note():
         flash("New note created on " + form.pub_date.data, "success")
         return redirect(url_for('notes'))
     return render_template('new_note.html', form=form)
+
+@app.route('/notes')
+@app.route('/notes/<int:note_id>')
+@login_required
+def note(note_id):
+    try:
+        note = models.Note.select().where(
+                models.Note.id == note_id).get()
+    except models.DoesNotExist:
+        abort(404)
+    return render_template('note.html', note=note)
+
 
 @app.route('/')
 def index():
