@@ -110,6 +110,16 @@ def note(note_id):
         abort(404)
     return render_template('note.html', note=note)
 
+@app.route('/notes/delete/<int:note_id>')
+@login_required
+def delete_note(note_id):
+    try:
+       note = models.Note.get(id=note_id, user=g.user._get_current_object().id).delete_instance()
+    except models.DoesNotExist:
+        flash("That note does not exist")
+        return redirect(url_for('notes'))
+    flash("Note successfully deleted")
+    return redirect(url_for('notes'))
 
 @app.route('/')
 def index():
