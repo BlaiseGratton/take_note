@@ -108,6 +108,9 @@ def note(note_id):
                 models.Note.id == note_id).get()
     except models.DoesNotExist:
         abort(404)
+    if note.user.id != g.user._get_current_object().id:
+        flash("You do not have authorization for that note", "error")
+        return redirect(url_for('notes'))
     return render_template('note.html', note=note)
 
 @app.route('/notes/delete/<int:note_id>')
@@ -116,7 +119,7 @@ def delete_note(note_id):
     try:
        note = models.Note.get(id=note_id, user=g.user._get_current_object().id).delete_instance()
     except models.DoesNotExist:
-        flash("That note does not exist")
+        flash("That note does not exist", "error")
         return redirect(url_for('notes'))
     flash("Note successfully deleted")
     return redirect(url_for('notes'))
