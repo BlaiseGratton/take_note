@@ -1,7 +1,7 @@
 #! usr/bin/env python
 
-from flask import (abort, flash, Flask, g,
-                   redirect, render_template, url_for)
+from flask import (abort, flash, Flask, g, jsonify,
+                   redirect, render_template, request, url_for)
 from flask.ext.bcrypt import check_password_hash
 from flask.ext.login import (current_user, LoginManager, login_user,
                              logout_user, login_required)
@@ -93,16 +93,13 @@ def new_note():
         return redirect(url_for('notes'))
     return render_template('newnote.html', form=form)
 
-@app.route('/new_category', methods=('POST'))
+@app.route('/new_category')
 @login_required
 def new_category():
-    form = forms.CategoryForm()
-    if form.validate_on_submit():
-        models.Category.create(name = form.name.data.strip())
-        flash("Successfully added category", "success")
-        return
-    flash("There was an error adding the category", "error")
-    return
+    name = request.args.get('name')
+    models.Category.create(name=name)
+    flash("Successfully added category", "success")
+    return None
 
 @app.route('/notes')
 @login_required

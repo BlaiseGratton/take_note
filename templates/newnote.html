@@ -12,9 +12,10 @@
   <button type="submit" id="submit">Submit</button>
 </form>
 <div id="new-category">
-  <form method="POST" action="" id="categoryForm">
+  <form method="POST" action="" id="category-form">
+    {{ form.hidden_tag() }}
     <input id="name" name="name" type="text" placeholder="Category Name">
-    <button id="submitCategory">Submit</button>
+    <button id="submit-category">Submit</button>
   </form>
 </div>
 {% endblock %}
