@@ -8,6 +8,15 @@
   {% for field in form %}
     {{ render_field(field) }}
   {% endfor %}
+  <button id="category-button">New Category</button>
   <button type="submit" id="submit">Post</button>
 </form>
+<div id="new-category">
+  <p>She wants the D.</p>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="//code.jquery.com/jquery-1.11.2.min.js" type="text/javascript"></script>
+<script src="static/js/jquery.simplemodal.1.1.4.min.js" type="text/javascript"></script>
+<script src="static/js/scripts.js" type="text/javascript"></script>
 {% endblock %}
