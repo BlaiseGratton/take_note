@@ -9,10 +9,13 @@
     {{ render_field(field) }}
   {% endfor %}
   <button id="category-button">New Category</button>
-  <button type="submit" id="submit">Post</button>
+  <button type="submit" id="submit">Submit</button>
 </form>
 <div id="new-category">
-  <p>She wants the D.</p>
+  <form method="POST" action="" id="categoryForm">
+    <input id="name" name="name" type="text" placeholder="Category Name">
+    <button id="submitCategory">Submit</button>
+  </form>
 </div>
 {% endblock %}
 {% block scripts %}

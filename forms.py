@@ -52,3 +52,6 @@ class NoteForm(Form):
    title = StringField('Title', validators=[DataRequired()])
    category = IntegerField('CategoryId', validators=[DataRequired()])
    content = TextAreaField("Your note...", validators=[DataRequired()])
+
+class CategoryForm(Form):
+    name = StringField('Name', validators=[DataRequired()])

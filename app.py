@@ -93,6 +93,17 @@ def new_note():
         return redirect(url_for('notes'))
     return render_template('newnote.html', form=form)
 
+@app.route('/new_category', methods=('POST'))
+@login_required
+def new_category():
+    form = forms.CategoryForm()
+    if form.validate_on_submit():
+        models.Category.create(name = form.name.data.strip())
+        flash("Successfully added category", "success")
+        return
+    flash("There was an error adding the category", "error")
+    return
+
 @app.route('/notes')
 @login_required
 def notes():
