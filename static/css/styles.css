@@ -5,3 +5,19 @@ body {
 #new-category {
   display: none;
 }
+
+.success {
+  color: #559462;
+}
+
+.error {
+  color: #ff5f5d;
+}
+
+.notification {
+  text-align: center;
+}
+
+.register-login-buttons {
+  text-align: center;
+}
