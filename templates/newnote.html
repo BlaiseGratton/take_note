@@ -3,14 +3,17 @@
 
 {% block title %}New Note{% endblock %}
 {% block content %}
-<form method="POST" action="">
-  {{ form.hidden_tag() }}
-  {% for field in form %}
-    {{ render_field(field) }}
-  {% endfor %}
-  <button id="category-button">New Category</button>
-  <button type="submit" id="submit">Submit</button>
-</form>
+<div class="row">
+  <div class="two columns spacer">.</div>
+  <form method="POST" action="" class="eight columns">
+    {{ form.hidden_tag() }}
+    {% for field in form %}
+      {{ render_field(field) }}
+    {% endfor %}
+    <button id="category-button">New Category</button>
+    <button type="submit" id="submit">Submit</button>
+  </form>
+</div>
 <div id="new-category">
   <form method="POST" action="" id="category-form">
     {{ form.hidden_tag() }}

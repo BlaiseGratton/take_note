@@ -2,6 +2,11 @@ body {
   background: beige;
 }
 
+.spacer {
+  color: beige;
+  cursor: default;
+}
+
 #new-category {
   display: none;
 }
