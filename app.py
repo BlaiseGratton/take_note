@@ -99,7 +99,7 @@ def new_category():
     name = request.args.get('name')
     models.Category.create(name=name)
     flash("Successfully added category", "success")
-    return None
+    return jsonify(addedCategory=name)
 
 @app.route('/notes')
 @login_required

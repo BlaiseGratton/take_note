@@ -9,7 +9,7 @@ jQuery(function($){
     $.getJSON("/new_category", {
       name: $('#category-form>input[type="text"]').val()
     }, function(data){
-      alert(data.result);
+      alert(data.addedCategory);
     });
     return false;
   });
