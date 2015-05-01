@@ -3,7 +3,8 @@
 
 {% block content %}
 <h3>{{ note.title }}</h3>
-<h4>{{ note.pub_date }}</h4>
+<h5>{{note.category.name}}</h5>
+<h6>{{ "{:%B %d, %Y | %I:%M %p}".format(note.pub_date) }}</h6>
 <p>{{ note.content }}</p>
 <a href="/notes/delete/{{note.id}}">Delete</a>
 {% endblock %}
