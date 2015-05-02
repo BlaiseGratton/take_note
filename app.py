@@ -129,7 +129,7 @@ def delete_note(note_id):
     except models.DoesNotExist:
         flash("That note does not exist", "error")
         return redirect(url_for('notes'))
-    flash("Note successfully deleted")
+    flash("Note successfully deleted", "success")
     return redirect(url_for('notes'))
 
 @app.route('/')

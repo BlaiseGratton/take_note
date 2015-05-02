@@ -1,7 +1,12 @@
 jQuery(function($){
 
   $('#category-button').click(function(e){
-    $('#new-category').modal();
+    $('#new-category').modal({
+      overlayClose:true,
+      opacity:80,
+      overlayCss: { backgroundColor: '#222' },
+      minHeight: 90
+    });
     return false;
   });
 
