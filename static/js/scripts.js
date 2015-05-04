@@ -13,8 +13,10 @@ jQuery(function($){
   $('#submit-category').bind('click', function(){
     $.getJSON("/new_category", {
       name: $('#category-form>input[type="text"]').val()
-    }, function(data){
-      alert(data.addedCategory);
+    }, function(addedCategory){
+      $('select[name="category"]').append(
+        '<option value="' + addedCategory.id + '">' + addedCategory.name + '</option'
+      );
     });
     return false;
   });

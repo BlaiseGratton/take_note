@@ -98,9 +98,8 @@ def new_note():
 @login_required
 def new_category():
     name = request.args.get('name')
-    models.Category.create(name=name)
-    flash("Successfully added category", "success")
-    return jsonify(addedCategory=name)
+    addedCategory = models.Category.create(name=name)
+    return jsonify(name=addedCategory.name, id=addedCategory.id)
 
 @app.route('/notes')
 @login_required
