@@ -17,6 +17,7 @@ jQuery(function($){
       $('select[name="category"]').append(
         '<option value="' + addedCategory.id + '">' + addedCategory.name + '</option'
       );
+      $.modal.close();
     });
     return false;
   });
