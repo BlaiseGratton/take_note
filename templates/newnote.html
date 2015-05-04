@@ -7,9 +7,13 @@
   <div class="two columns spacer">.</div>
   <form method="POST" action="" class="eight columns">
     {{ form.hidden_tag() }}
-    {% for field in form %}
-      {{ render_field(field) }}
-    {% endfor %}
+    <input type="text" placeholder="Title" name="title">
+    <select name="category">
+      {% for category in categories %}
+      <option value="{{ category.id }}">{{ category.name }}</option>
+      {% endfor %}
+    </select> 
+    <input type="text" placeholder="Content" name="content">
     <button id="category-button">New Category</button>
     <button type="submit" id="submit">Submit</button>
   </form>

@@ -82,6 +82,7 @@ def logout():
 @login_required
 def new_note():
     form = forms.NoteForm()
+    categories = models.Category.select()
     if form.validate_on_submit():
         models.Note.create(
             user = g.user._get_current_object(),
@@ -91,7 +92,7 @@ def new_note():
         )
         flash("New note created on " + "{:%B %d, %Y}".format(datetime.datetime.now()), "success")
         return redirect(url_for('notes'))
-    return render_template('newnote.html', form=form)
+    return render_template('newnote.html', form=form, categories=categories)
 
 @app.route('/new_category')
 @login_required
