@@ -17,6 +17,8 @@ jQuery(function($){
       $('select[name="category"]').append(
         '<option value="' + addedCategory.id + '">' + addedCategory.name + '</option'
       );
+      var success = $('<div>').text('Successfully added category').addClass('twelve columns notification success');
+      $('.flashes').append(success);
       $.modal.close();
     });
     return false;
