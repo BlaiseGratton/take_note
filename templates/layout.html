@@ -24,7 +24,7 @@
           {% if current_user.is_authenticated() %}
             <a href="{{ url_for('notes') }}" class="three columns button button-primary">All Notes</a>
             <a href="{{ url_for('new_note') }}" class="three columns button button-primary">New Note</a>
-            <a href="{{ url_for('index') }}" class="three columns button button-primary">Search</a>
+            <a href="{{ url_for('search') }}" class="three columns button button-primary">Search</a>
             <a href="{{ url_for('logout') }}" class="icon-power three columns button button-primary">Log Out</a>
           {% else %}
             <div class="register-login-buttons">

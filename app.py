@@ -132,6 +132,11 @@ def delete_note(note_id):
     flash("Note successfully deleted", "success")
     return redirect(url_for('notes'))
 
+@app.route('/search', methods=('GET', 'POST'))
+@login_required
+def search():
+    return render_template('search.html')
+
 @app.route('/')
 def index():
     return render_template('index.html')
