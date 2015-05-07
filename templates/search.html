@@ -5,7 +5,7 @@
 {% block content %}
 <form method="POST" action="">
   {{ form.hidden_tag() }}
-  {% render_field(form.search_term) %}
+  {{ render_field(form.search_term) }}
   <button type="submit">Search</button>
 </form>
 {{ results }}

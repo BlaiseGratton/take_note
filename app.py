@@ -132,10 +132,14 @@ def delete_note(note_id):
     flash("Note successfully deleted", "success")
     return redirect(url_for('notes'))
 
-@app.route('/search/', methods=('GET', 'POST'), defaults={'search_term': None})
+@app.route('/search/', methods=('GET', 'POST'))
 @login_required
-def search(search_term):
-    return render_template('search.html', results=search_term)
+def search():
+    form=forms.SearchForm()
+    if form.validate_on_submit():
+        search_term = form.search_term.data
+        return render_template('search.html', form=form, results=search_term)
+    return render_template('search.html', form=form)
 
 @app.route('/')
 def index():
