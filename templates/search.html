@@ -1,7 +1,12 @@
 {% extends 'layout.html' %}
+{% from 'macros.html' import render_field %}
 {% block title %}Search{% endblock %}
 
 {% block content %}
-<label for="search-box">Search:</label>
-<input type="text" id="search-box">
+<form method="POST" action="">
+  {{ form.hidden_tag() }}
+  {% render_field(form.search_term) %}
+  <button type="submit">Search</button>
+</form>
+{{ results }}
 {% endblock %}

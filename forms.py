@@ -55,3 +55,6 @@ class NoteForm(Form):
 
 class CategoryForm(Form):
     name = StringField('Name', validators=[DataRequired()])
+
+class SearchForm(Form):
+    search_term = StringField('Search', validators=[DataRequired()])
