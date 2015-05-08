@@ -31,3 +31,7 @@ body {
 .register-login-buttons {
   text-align: center;
 }
+
+div.title {
+  margin-left: 0;
+}

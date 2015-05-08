@@ -1,21 +1,24 @@
 {% extends 'layout.html' %}
 {% from 'macros.html' import render_field %}
-
 {% block title %}New Note{% endblock %}
+
 {% block content %}
 <div class="row">
   <div class="two columns spacer">.</div>
   <form method="POST" action="" class="eight columns">
     {{ form.hidden_tag() }}
-    <input type="text" placeholder="Title" name="title">
+    <div class="six columns title">
+      <input class="u-full-width" type="text" placeholder="Title" name="title">
+    </div>
     <select name="category">
+      <option selected="selected" disabled="true">-Category-</option>
       {% for category in categories %}
       <option value="{{ category.id }}">{{ category.name }}</option>
       {% endfor %}
     </select> 
-    <input type="text" placeholder="Content" name="content">
     <button id="category-button">New Category</button>
-    <button type="submit" id="submit">Submit</button>
+    <input type="text" class="twelve columns" placeholder="Content" name="content">
+    <button type="submit" class="u-cf" id="submit">Save</button>
   </form>
 </div>
 <div id="new-category">
@@ -26,8 +29,9 @@
   </form>
 </div>
 {% endblock %}
+
 {% block scripts %}
-<script src="//code.jquery.com/jquery-1.11.2.min.js" type="text/javascript"></script>
-<script src="static/js/jquery.simplemodal.1.1.4.min.js" type="text/javascript"></script>
-<script src="static/js/scripts.js" type="text/javascript"></script>
+  <script src="//code.jquery.com/jquery-1.11.2.min.js" type="text/javascript"></script>
+  <script src="static/js/jquery.simplemodal.1.1.4.min.js" type="text/javascript"></script>
+  <script src="static/js/scripts.js" type="text/javascript"></script>
 {% endblock %}
