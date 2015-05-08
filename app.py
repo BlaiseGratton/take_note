@@ -137,13 +137,15 @@ def delete_note(note_id):
 def search():
     form=forms.SearchForm()
     if form.validate_on_submit():
+        user = g.user._get_current_object()
         search_term = form.search_term.data
-        try:
-            results = models.Note.select().where(
-                (models.Note.content.contains(search_term)) or
-                (models.Note.title.contains(search_term))
-            )
-        except models.DoesNotExist:
+        results = models.Note.select().where(
+                    models.Note.user == user.id
+                ).select().where(
+                    (models.Note.content.contains(search_term)) | 
+                    (models.Note.title.contains(search_term))
+                )
+        if results.count() == 0:
             flash("No matches found", "error")
             return render_template('search.html', form=form)
         return render_template('search.html', form=form, results=results)

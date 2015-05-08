@@ -10,6 +10,6 @@
 </form>
 <ul>
 {% for result in results %}
-  <li>{{ result.title }}</li>
+<li><a href="{{ url_for('note', note_id=result.id) }}">{{ result.title }}</a></li>
 {% endfor %}
 {% endblock %}
