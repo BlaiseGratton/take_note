@@ -138,7 +138,15 @@ def search():
     form=forms.SearchForm()
     if form.validate_on_submit():
         search_term = form.search_term.data
-        return render_template('search.html', form=form, results=search_term)
+        try:
+            results = models.Note.select().where(
+                (models.Note.content.contains(search_term)) or
+                (models.Note.title.contains(search_term))
+            )
+        except models.DoesNotExist:
+            flash("No matches found", "error")
+            return render_template('search.html', form=form)
+        return render_template('search.html', form=form, results=results)
     return render_template('search.html', form=form)
 
 @app.route('/')
