@@ -10,14 +10,14 @@
     <div class="six columns title">
       <input class="u-full-width" type="text" placeholder="Title" name="title">
     </div>
-    <select name="category">
-      <option selected="selected" disabled="true">-Category-</option>
+    <select class="u-pull-right" name="category">
+      <option value="-Category-" selected="selected" disabled="true">-Category-</option>
       {% for category in categories %}
       <option value="{{ category.id }}">{{ category.name }}</option>
       {% endfor %}
+      <option value="new-category">Add Category</option>
     </select> 
-    <button id="category-button">New Category</button>
-    <input type="text" class="twelve columns" placeholder="Content" name="content">
+    <textarea class="twelve columns" placeholder="Content" name="content"></textarea>
     <button type="submit" class="u-cf" id="submit">Save</button>
   </form>
 </div>

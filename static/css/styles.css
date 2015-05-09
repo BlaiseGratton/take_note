@@ -35,3 +35,7 @@ body {
 div.title {
   margin-left: 0;
 }
+
+textarea[name="content"] {
+  min-height: 12rem;
+}
