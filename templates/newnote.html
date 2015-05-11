@@ -8,6 +8,9 @@
   <form method="POST" action="" class="eight columns">
     {{ form.hidden_tag() }}
     <div class="six columns title">
+      {% if form.title.errors %}
+				<div class="notification error">{{ form.title.errors[0] }}</div>
+		  {% endif %}
       <input class="u-full-width" type="text" placeholder="Title" name="title">
     </div>
     <select class="u-pull-right" name="category">
