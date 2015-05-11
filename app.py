@@ -127,8 +127,7 @@ def delete_note(note_id):
     try:
        note = models.Note.get(id=note_id, user=g.user._get_current_object().id).delete_instance()
     except models.DoesNotExist:
-        flash("That note does not exist", "error")
-        return redirect(url_for('notes'))
+        abort(404)
     flash("Note successfully deleted", "success")
     return redirect(url_for('notes'))
 
@@ -154,6 +153,10 @@ def search():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     models.initialize()

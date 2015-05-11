@@ -39,3 +39,7 @@ div.title {
 textarea[name="content"] {
   min-height: 12rem;
 }
+
+.u-center {
+  text-align: center;
+}
