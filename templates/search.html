@@ -6,6 +6,7 @@
 <form method="POST" action="">
   {{ form.hidden_tag() }}
   {{ render_field(form.search_term) }}
+  {{ render_field(form.search_date) }}
   <button type="submit">Search</button>
 </form>
 <ul>

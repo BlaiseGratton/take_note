@@ -144,11 +144,18 @@ def search():
                     (models.Note.content.contains(search_term)) | 
                     (models.Note.title.contains(search_term))
                 )
+        if form.search_date.data:
+            results = models.Note.select().where(
+                        models.Note.user == user.id
+                    ).select().where(
+                        models.Note.pub_date > form.search_date.data
+                    )
         if results.count() == 0:
             flash("No matches found", "error")
             return render_template('search.html', form=form)
         return render_template('search.html', form=form, results=results)
     return render_template('search.html', form=form)
+
 
 @app.route('/')
 def index():
