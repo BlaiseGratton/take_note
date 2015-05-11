@@ -7,20 +7,32 @@
   <div class="two columns spacer">.</div>
   <form method="POST" action="" class="eight columns">
     {{ form.hidden_tag() }}
-    <div class="six columns title">
-      {% if form.title.errors %}
-				<div class="notification error">{{ form.title.errors[0] }}</div>
-		  {% endif %}
-      <input class="u-full-width" type="text" placeholder="Title" name="title">
+    <div class="row">
+      <div class="six columns title">
+        {% if form.title.errors %}
+          <div class="notification error">{{ form.title.errors[0] }}</div>
+        {% endif %}
+        <input class="u-full-width" type="text" placeholder="Title" name="title">
+      </div>
+      <div>
+        {% if form.category.errors %}
+          <div class="notification error u-pull-right">{{ form.category.errors[0] }}</div>
+        {% endif %}
+        <select class="u-pull-right" name="category">
+          <option value="-Category-" selected="selected" disabled="true">-Category-</option>
+          {% for category in categories %}
+          <option value="{{ category.id }}">{{ category.name }}</option>
+          {% endfor %}
+          <option value="new-category">Add Category</option>
+        </select> 
+      </div>
     </div>
-    <select class="u-pull-right" name="category">
-      <option value="-Category-" selected="selected" disabled="true">-Category-</option>
-      {% for category in categories %}
-      <option value="{{ category.id }}">{{ category.name }}</option>
-      {% endfor %}
-      <option value="new-category">Add Category</option>
-    </select> 
-    <textarea class="twelve columns" placeholder="Content" name="content"></textarea>
+    <div class="row">
+      {% if form.content.errors %}
+        <div class="notification error">{{ form.content.errors[0] }}</div>
+      {% endif %}
+      <textarea class="twelve columns" placeholder="Content" name="content"></textarea>
+    </div>
     <button type="submit" class="u-cf" id="submit">Save</button>
   </form>
 </div>

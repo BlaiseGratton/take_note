@@ -50,9 +50,9 @@ class LoginForm(Form):
     password = PasswordField('Password', validators=[DataRequired()])
 
 class NoteForm(Form):
-   title = StringField('Title', validators=[DataRequired()])
-   category = IntegerField('CategoryId', validators=[DataRequired()])
-   content = TextAreaField("Your note...", validators=[DataRequired()])
+   title = StringField('Title', validators=[DataRequired(message="Your note needs a title")])
+   category = IntegerField('CategoryId', validators=[DataRequired(message="Please select a category")])
+   content = TextAreaField("Your note...", validators=[DataRequired(message="A note about nothing?")])
 
 class CategoryForm(Form):
     name = StringField('Name', validators=[DataRequired()])
