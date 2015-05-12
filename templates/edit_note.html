@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+{% from 'macros.html' import render_field %}
+{% block title %}New Note{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="two columns spacer">.</div>
+  <form method="POST" action="" class="eight columns">
+    {{ form.hidden_tag() }}
+    <div class="row">
+      <div class="six columns title">
+        {% if form.title.errors %}
+          <div class="notification error">{{ form.title.errors[0] }}</div>
+        {% endif %}
+        <input class="u-full-width" type="text" value="{{ form.title.data }}" name="title">
+      </div>
+      <div>
+        {% if form.category.errors %}
+          <div class="notification error u-pull-right">{{ form.category.errors[0] }}</div>
+        {% endif %}
+        <select class="u-pull-right" name="category">
+          <option value="-Category-" disabled="true">-Category-</option>
+          {% for category in categories %}
+            {% if category.id == form.category.data.id %}
+            <option selected="selected" value="{{ category.id }}">{{ category.name }}</option>
+            {% else %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endif %}
+          {% endfor %}
+          <option value="new-category">Add Category</option>
+        </select> 
+      </div>
+    </div>
+    <div class="row">
+      {% if form.content.errors %}
+        <div class="notification error">{{ form.content.errors[0] }}</div>
+      {% endif %}
+      <textarea class="twelve columns" name="content">{{ form.content.data }}</textarea>
+    </div>
+    <button type="submit" class="u-cf" id="submit">Save</button>
+  </form>
+</div>
+<div id="new-category">
+  <form method="POST" action="" id="category-form">
+    {{ form.hidden_tag() }}
+    <input id="name" name="name" type="text" placeholder="Category Name">
+    <button id="submit-category">Submit</button>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script src="//code.jquery.com/jquery-1.11.2.min.js" type="text/javascript"></script>
+  <script src="static/js/jquery.simplemodal.1.1.4.min.js" type="text/javascript"></script>
+  <script src="static/js/scripts.js" type="text/javascript"></script>
+{% endblock %}
