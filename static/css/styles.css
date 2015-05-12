@@ -43,3 +43,7 @@ textarea[name="content"] {
 .u-center {
   text-align: center;
 }
+
+p {
+  white-space: pre-wrap;
+}
