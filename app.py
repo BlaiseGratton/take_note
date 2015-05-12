@@ -121,6 +121,24 @@ def note(note_id):
         return redirect(url_for('notes'))
     return render_template('note.html', note=note)
 
+@app.route('/notes/<int:note_id>/edit', methods=('GET', 'POST'))
+@login_required
+def edit_note(note_id):
+    try:
+        note = models.Note.select().where(models.Note.id == note_id).get()
+    except models.DoesNotExist:
+        abort(404)
+    if note.user.id != g.user._get_current_object().id:
+        flash("You do not have authorization for that note", "error")
+        return redirect(url_for('notes'))
+    form = forms.NoteForm(request.form, obj=note)
+    if form.validate_on_submit():
+        form.populate_obj(note)
+        note.save()
+        return redirect(url_for('note', note_id=note.id))
+    categories = models.Category.select()
+    return render_template('edit_note.html', form=form, categories=categories)
+
 @app.route('/notes/delete/<int:note_id>')
 @login_required
 def delete_note(note_id):
