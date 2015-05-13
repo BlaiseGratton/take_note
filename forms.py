@@ -1,5 +1,5 @@
 from flask_wtf import Form
-from wtforms import IntegerField, StringField, PasswordField, TextAreaField
+from wtforms import IntegerField, StringField, PasswordField, SelectField, TextAreaField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import (DataRequired, Email, EqualTo,
                                 Length, Optional, Regexp, ValidationError)
@@ -58,5 +58,6 @@ class CategoryForm(Form):
     name = StringField('Name', validators=[DataRequired()])
 
 class SearchForm(Form):
-    search_term = StringField('Search', validators=[DataRequired()])
+    search_term = StringField('Search')
+    date_operator = SelectField(u'Operator', choices=[('before', 'Earlier than'), ('on', 'On'), ('after', 'Later than')])
     search_date = DateField('DatePicker', format='%Y-%m-%d', validators=[Optional()])

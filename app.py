@@ -156,19 +156,33 @@ def search():
     if form.validate_on_submit():
         user = g.user._get_current_object()
         search_term = form.search_term.data
-        results = models.Note.select().where(
-                    models.Note.user == user.id
-                ).select().where(
-                    (models.Note.content.contains(search_term)) | 
-                    (models.Note.title.contains(search_term))
-                )
-        if form.search_date.data:
+        results=[]
+        if not form.search_date.data and search_term:
             results = models.Note.select().where(
                         models.Note.user == user.id
                     ).select().where(
-                        models.Note.pub_date > form.search_date.data
+                        (models.Note.content.contains(search_term)) | 
+                        (models.Note.title.contains(search_term))
                     )
-        if results.count() == 0:
+        if form.search_date.data:
+            results = models.Note.select().where(
+                        models.Note.user == user.id
+                    )
+            if form.date_operator.data == 'before':
+                results = results.select().where(models.Note.pub_date < form.search_date.data)
+            if form.date_operator.data == 'on':
+                results = results.select().where(
+                            (models.Note.pub_date.year == form.search_date.data.year) and
+                            (models.Note.pub_date.month == form.search_date.data.month) and
+                            (models.Note.pub_date.day == form.search_date.data.day)
+                        )
+            if form.date_operator.data == 'after':
+                results = results.select().where(models.Note.pub_date > form.search_date.data)
+            results = results.select().where(
+                        (models.Note.content.contains(search_term)) |
+                        (models.Note.title.contains(search_term))
+                    )
+        if not results:
             flash("No matches found", "error")
             return render_template('search.html', form=form)
         return render_template('search.html', form=form, results=results)
