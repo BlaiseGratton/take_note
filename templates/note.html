@@ -6,6 +6,6 @@
 <h5>{{note.category.name}}</h5>
 <h6>{{ "{:%B %d, %Y | %I:%M %p}".format(note.pub_date) }}</h6>
 <p>{{ note.content }}</p>
-<a class="button" href="/notes/{{note.id}}/edit">Edit</a>
-<a class="button" href="/notes/delete/{{note.id}}">Delete</a>
+<a class="button" href="/note/{{note.id}}/edit">Edit</a>
+<a class="button" href="/note/delete/{{note.id}}">Delete</a>
 {% endblock %}

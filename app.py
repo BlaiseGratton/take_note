@@ -101,14 +101,15 @@ def new_category():
     addedCategory = models.Category.create(name=name)
     return jsonify(name=addedCategory.name, id=addedCategory.id)
 
-@app.route('/notes')
+@app.route('/notes', defaults={'page':1})
+@app.route('/notes/<int:page>')
 @login_required
-def notes():
+def notes(page):
     user = g.user._get_current_object()
-    notes = models.Note.select().where(models.Note.user == user.id)
+    notes = models.Note.select().where(models.Note.user == user.id).paginate(page, 5)
     return render_template('notes.html', notes=notes)
 
-@app.route('/notes/<int:note_id>')
+@app.route('/note/<int:note_id>')
 @login_required
 def note(note_id):
     try:
@@ -121,7 +122,7 @@ def note(note_id):
         return redirect(url_for('notes'))
     return render_template('note.html', note=note)
 
-@app.route('/notes/<int:note_id>/edit', methods=('GET', 'POST'))
+@app.route('/note/<int:note_id>/edit', methods=('GET', 'POST'))
 @login_required
 def edit_note(note_id):
     try:
@@ -139,7 +140,7 @@ def edit_note(note_id):
     categories = models.Category.select()
     return render_template('edit_note.html', form=form, categories=categories)
 
-@app.route('/notes/delete/<int:note_id>')
+@app.route('/note/delete/<int:note_id>')
 @login_required
 def delete_note(note_id):
     try:
@@ -182,7 +183,9 @@ def search():
                         (models.Note.content.contains(search_term)) |
                         (models.Note.title.contains(search_term))
                     )
-        if not results:
+        try:
+            results[0]
+        except IndexError:
             flash("No matches found", "error")
             return render_template('search.html', form=form)
         return render_template('search.html', form=form, results=results)
