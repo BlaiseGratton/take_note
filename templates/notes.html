@@ -2,6 +2,7 @@
 {% block title %}Notes{% endblock %}
 
 {% block content %}
+{{ pages }}
 <ul>
   {% for note in notes %}
   <li><a href="{{ url_for('note', note_id=note.id) }}">{{ note.title }}</a></li>

@@ -8,6 +8,7 @@ from flask.ext.login import (current_user, LoginManager, login_user,
 
 import datetime
 import forms
+import math
 import models
 
 DEBUG = True
@@ -106,8 +107,9 @@ def new_category():
 @login_required
 def notes(page):
     user = g.user._get_current_object()
+    pages = math.ceil(models.Note.select().where(models.Note.user == user.id).count()/5.0)
     notes = models.Note.select().where(models.Note.user == user.id).paginate(page, 5)
-    return render_template('notes.html', notes=notes)
+    return render_template('notes.html', notes=notes, pages=pages)
 
 @app.route('/note/<int:note_id>')
 @login_required
