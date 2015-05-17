@@ -112,7 +112,7 @@ def notes(page):
     notes = models.Note.select().where(models.Note.user == user.id).paginate(page, 10)
     if page not in page_range:
         return redirect(url_for('notes'))
-    return render_template('notes.html', notes=notes, pages=page_range)
+    return render_template('notes.html', notes=notes, pages=page_range, current_page=page)
 
 @app.route('/note/<int:note_id>')
 @login_required
