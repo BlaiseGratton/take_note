@@ -2,10 +2,14 @@
 {% block title %}Notes{% endblock %}
 
 {% block content %}
-{{ pages }}
+{% if pages[1] %}
+  {% for page in pages %}
+    <a class="pagination-link" href="{{ url_for('notes', page=page) }}">{{ page }}</a>
+  {% endfor %}
+{% endif %}
 <ul>
   {% for note in notes %}
-  <li><a href="{{ url_for('note', note_id=note.id) }}">{{ note.title }}</a></li>
+    <li><a href="{{ url_for('note', note_id=note.id) }}">{{ note.title }}</a></li>
   {% endfor %}
 </ul>
 {% endblock %}
