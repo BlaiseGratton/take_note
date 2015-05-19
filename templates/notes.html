@@ -3,8 +3,10 @@
 
 {% block content %}
 {% if pages[1] %}
-  {% if current_page != 1 %}
-  <a class="pagination-link" href="{{ url_for('notes', page=current_page-1) }}"><<</a>
+  {% if current_page == 1 %}
+    <a class="pagination-link" href=""><<</a>
+  {% else %}
+    <a class="pagination-link" href="{{ url_for('notes', page=current_page-1) }}"><<</a>
   {% endif %}
   {% for page in pages %}
     {% if page == current_page %}
@@ -15,6 +17,8 @@
   {% endfor %}
   {% if current_page != pages[-1] %}
     <a class="pagination-link" href="{{ url_for('notes', page=current_page+1) }}">>></a>
+  {% else %}
+    <a class="pagination-link" href="">>></a>
   {% endif %}
 {% endif %}
 <ul>
