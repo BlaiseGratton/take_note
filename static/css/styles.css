@@ -47,3 +47,27 @@ textarea[name="content"] {
 p {
   white-space: pre-wrap;
 }
+
+.pagination-link {
+  padding: 12px;
+  border-radius: 4px;
+  background-color: #63D3F0;
+  color: #fff;
+}
+
+.pagination-link:hover {
+  color: #e6e6e6;
+}
+
+.selected {
+ background-color: #33C3F0; 
+}
+
+.selected:hover,
+.pagination-link:hover {
+  background-color: #1EAEDB;
+}
+
+a {
+  text-decoration: none;
+}
