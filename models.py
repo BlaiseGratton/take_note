@@ -3,6 +3,7 @@ import datetime
 from flask.ext.bcrypt import generate_password_hash
 from flask.ext.login import UserMixin
 from peewee import *
+from playhouse.migrate import *
 
 DATABASE = SqliteDatabase('take_note.db', threadlocals=True)
 
@@ -36,6 +37,10 @@ class User(UserMixin, BaseModel):
 
 class Category(BaseModel):
     name = CharField(unique=True, max_length=100)
+    user = ForeignKeyField(
+        rel_model=User,
+        related_name='categories'
+    )
 
 class Note(BaseModel):
     user = ForeignKeyField(
@@ -57,3 +62,12 @@ def initialize():
     DATABASE.connect()
     DATABASE.create_tables([User, Note, Category], safe=True)
     DATABASE.close()
+
+with DATABASE.transaction():
+    user = ForeignKeyField(
+        rel_model=User,
+        related_name='categories'
+    )
+    migrate(
+        migrator.add_column('Category', 'user', user)
+    )
