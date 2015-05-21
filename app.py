@@ -83,10 +83,11 @@ def logout():
 @login_required
 def new_note():
     form = forms.NoteForm()
-    categories = models.Category.select()
+    user = g.user._get_current_object()
+    categories = models.Category.select().where(models.Category.user == user.id)
     if form.validate_on_submit():
         models.Note.create(
-            user = g.user._get_current_object(),
+            user = user,
             content = form.content.data.strip(),
             title = form.title.data,
             category = form.category.data
@@ -99,7 +100,10 @@ def new_note():
 @login_required
 def new_category():
     name = request.args.get('name')
-    addedCategory = models.Category.create(name=name)
+    addedCategory = models.Category.create(
+        name=name,
+        user = g.user._get_current_object()
+    )
     return jsonify(name=addedCategory.name, id=addedCategory.id)
 
 @app.route('/notes', defaults={'page':1})
@@ -110,8 +114,12 @@ def notes(page):
     pages = math.ceil(models.Note.select().where(models.Note.user == user.id).count()/10.0)
     page_range = list(range(1,int(pages+1)))
     notes = models.Note.select().where(models.Note.user == user.id).paginate(page, 10)
-    if page not in page_range:
-        return redirect(url_for('notes'))
+    try:
+        notes[0]
+        if page not in page_range:
+            return redirect(url_for('notes'))
+    except IndexError:
+        pass
     return render_template('notes.html', notes=notes, pages=page_range, current_page=page)
 
 @app.route('/note/<int:note_id>')
