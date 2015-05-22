@@ -111,9 +111,10 @@ def new_category():
 @login_required
 def notes(page):
     user = g.user._get_current_object()
-    pages = math.ceil(models.Note.select().where(models.Note.user == user.id).count()/10.0)
+    entries = user.entries*1.0
+    pages = math.ceil(models.Note.select().where(models.Note.user == user.id).count()/entries)
     page_range = list(range(1,int(pages+1)))
-    notes = models.Note.select().where(models.Note.user == user.id).paginate(page, 10)
+    notes = models.Note.select().where(models.Note.user == user.id).paginate(page, entries)
     try:
         notes[0]
         if page not in page_range:
