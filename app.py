@@ -205,6 +205,9 @@ def search():
         return render_template('search.html', form=form, results=results)
     return render_template('search.html', form=form)
 
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
 
 @app.route('/')
 def index():

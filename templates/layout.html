@@ -14,11 +14,8 @@
   <body class="container">
     <header>
       <div class="row">
-        <div class="">
-          <a href="{{ url_for('index') }}" class="icon-logo"></a>
-        </div>
-        <div class="grid-33">        
-          <h4>{% if current_user.is_authenticated() %}Logged in as {{ current_user.username }}{% endif %}</h4>
+        <div class="offset-by-three columns">        
+          <h4>{% if current_user.is_authenticated() %}Logged in as {{ current_user.username }} <a href="{{ url_for('settings') }}">.</a>{% endif %}</h4>
         </div>
         <div class="">
           {% if current_user.is_authenticated() %}
