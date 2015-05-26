@@ -61,3 +61,7 @@ class SearchForm(Form):
     search_term = StringField('Search')
     date_operator = SelectField(u'Operator', choices=[('before', 'Earlier than'), ('on', 'On'), ('after', 'Later than')])
     search_date = DateField('DatePicker', format='%Y-%m-%d', validators=[Optional()])
+
+class SettingsForm(Form):
+    list_range = list(range(5, 26))
+    paginate_range = SelectField(u'Pagination Range', choices=[(num, num) for num in list_range])

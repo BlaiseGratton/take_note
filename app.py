@@ -207,7 +207,8 @@ def search():
 
 @app.route('/settings')
 def settings():
-    return render_template('settings.html')
+    form = forms.SettingsForm()
+    return render_template('settings.html', form=form)
 
 @app.route('/')
 def index():
