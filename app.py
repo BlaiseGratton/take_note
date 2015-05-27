@@ -205,9 +205,13 @@ def search():
         return render_template('search.html', form=form, results=results)
     return render_template('search.html', form=form)
 
-@app.route('/settings')
+@app.route('/settings', methods=('GET', 'POST'))
 def settings():
     form = forms.SettingsForm()
+    if form.validate_on_submit():
+        user = g.user._get_current_object()
+        paginate_setting = form.paginate_range.data
+        return render_template('settings.html', form=form, paginate_range=paginate_setting)
     return render_template('settings.html', form=form)
 
 @app.route('/')
