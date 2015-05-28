@@ -63,4 +63,4 @@ class SearchForm(Form):
     search_date = DateField('DatePicker', format='%Y-%m-%d', validators=[Optional()])
 
 class SettingsForm(Form):
-    paginate_range = SelectField(u'Pagination Range', choices=[(num, num) for num in list(range(5, 26))])
+    paginate_range = SelectField(u'Pagination Range', coerce=int)

@@ -208,6 +208,7 @@ def search():
 @app.route('/settings', methods=('GET', 'POST'))
 def settings():
     form = forms.SettingsForm()
+    form.paginate_range.choices = [(num, num) for num in list(range(5, 26))]
     if form.validate_on_submit():
         user = g.user._get_current_object()
         paginate_setting = form.paginate_range.data
