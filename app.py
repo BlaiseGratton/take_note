@@ -211,7 +211,13 @@ def settings():
     form.paginate_range.choices = [(num, num) for num in list(range(5, 26))]
     if form.validate_on_submit():
         user = g.user._get_current_object()
-        paginate_setting = form.paginate_range.data
+        try:
+            user.entries = form.paginate_range.data
+            user.save()
+            flash("Settings saved")
+        except Exception:
+            flash(Exception.message, "error")
+            return redirect(url_for('settings'))
         return render_template('settings.html', form=form, paginate_range=paginate_setting)
     return render_template('settings.html', form=form)
 
